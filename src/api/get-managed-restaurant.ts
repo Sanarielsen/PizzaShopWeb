@@ -4,7 +4,7 @@ export interface GetManagedRestaurantResponse {
 
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   phone: string | null;
   role: "manager" | "customer";
   createdAt: Date | null;
