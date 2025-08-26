@@ -1,4 +1,6 @@
+import { getDailyRevenueInPeriod } from "@/api/get-daily-revenue-in-period";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import { ResponsiveContainer, LineChart, XAxis, YAxis, CartesianGrid, Line } from 'recharts'
 import colors from 'tailwindcss/colors'
 
@@ -13,6 +15,11 @@ const data = [
 ]
 
 export function RevenueChart() {
+  const { data: dailyRevenueInPeriod } = useQuery({
+    queryKey: ['metrics','daily-revenue-in-period'],
+    queryFn: getDailyRevenueInPeriod
+  }) 
+
   return (
     <Card className="col-span-6">
       <CardHeader className="flex-row items-center justify-between">
@@ -22,18 +29,21 @@ export function RevenueChart() {
           </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={data} style={{ fontSize: 12 }}>
-            <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
-            <YAxis stroke="#888" axisLine={false} tickLine={false} width={80} tickFormatter={(value: number) => value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})} />
-            <Line type="linear" strokeWidth={2} dataKey="revenue" stroke={colors['violet']['500']}/>
+        { dailyRevenueInPeriod && (  
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={dailyRevenueInPeriod} style={{ fontSize: 12 }}>
+              <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
+              <YAxis stroke="#888" axisLine={false} tickLine={false} width={80} tickFormatter={(value: number) => value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})} />
+              <Line type="linear" strokeWidth={2} dataKey="receipt" stroke={colors['violet']['500']}/>
 
-            <CartesianGrid
-              className="stroke-muted"
-              vertical={false}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              <CartesianGrid
+                className="stroke-muted"
+                vertical={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>          
+        ) }
+
       </CardContent>
     </Card>
   )
