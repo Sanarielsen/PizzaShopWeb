@@ -5,7 +5,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { ResponsiveContainer, LineChart, XAxis, YAxis, CartesianGrid, Line } from 'recharts'
 import colors from 'tailwindcss/colors'
@@ -23,6 +23,15 @@ export function RevenueChart() {
         to: dateRange?.to
     })
   }) 
+
+  const chartData = useMemo(() => {
+    return dailyRevenueInPeriod?.map((chartItem) => {
+      return {
+        date: chartItem.date,
+        receipt: chartItem.receipt / 100
+      }
+    })
+  }, [dailyRevenueInPeriod])
 
   return (
     <Card className="col-span-6">
@@ -58,9 +67,9 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent>
-        { dailyRevenueInPeriod && (  
+        { chartData && (  
           <ResponsiveContainer width="100%" height={240}>
-            <LineChart data={dailyRevenueInPeriod} style={{ fontSize: 12 }}>
+            <LineChart data={chartData} style={{ fontSize: 12 }}>
               <XAxis 
                 dataKey="date" 
                 tickLine={false} 
