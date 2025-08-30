@@ -29,5 +29,7 @@
         "src/*"
       ]
     },
+    "types": ["vitest/globals"]
   },
+  "include": ["src", "test"]
 }
