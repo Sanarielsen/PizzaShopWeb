@@ -5,10 +5,10 @@ export interface GetManagedRestaurantResponse {
   id: string;
   name: string;
   description: string | null;
-  phone: string | null;
-  role: "manager" | "customer";
+  managerId: string | null;
+  role?: "manager" | "customer";
   createdAt: Date | null;
-  updatedArt: Date | null;
+  updatedAt: Date | null;
 }
 
 export async function getManagedRestaurant() {
