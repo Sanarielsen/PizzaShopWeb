@@ -4,6 +4,6 @@ import type { GetMonthCanceledOrdersAmountResponse } from '../get-month-canceled
 export const getMonthCanceledOrdersAmountMock = http.get<never, never, GetMonthCanceledOrdersAmountResponse>('/metrics/month-canceled-orders-amount', () => {
   return HttpResponse.json({
     amount: 3,
-    diffFromLastMonth: -5
+    diffFromLastMonth: -10
   })
 })
